@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Teacher — Freida McFadden</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111116;
+    --card: #16161e;
+    --border: rgba(255,255,255,0.07);
+    --accent: #c8a96e;
+    --accent2: #8b3a3a;
+    --text: #e8e4dc;
+    --muted: #7a7670;
+    --red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    cursor: default;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,12,0.98), transparent);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 60%, #1a0a0a 0%, #0a0a0c 70%);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-title em {
+    display: block;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+    font-size: 0.6em;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .blood-line {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--accent2), transparent);
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  /* SECTIONS */
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    margin-bottom: 3rem;
+    line-height: 1.15;
+  }
+
+  /* ══════════════════════════════
+     SECTION 1 — WHO AM I
+  ══════════════════════════════ */
+  #whoami { border-top: 1px solid var(--border); }
+
+  .who-intro {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+  }
+
+  .who-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .who-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .who-card:hover { border-color: rgba(200,169,110,0.3); }
+
+  .who-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .who-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    flex-shrink: 0;
+  }
+
+  .who-name-hidden {
+    background: #1e1e28;
+    color: #1e1e28;
+    border-radius: 3px;
+    padding: 0 8px;
+    cursor: pointer;
+    transition: all 0.4s;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255,255,255,0.05);
+    font-family: 'Space Mono', monospace;
+  }
+  .who-name-hidden.revealed {
+    background: transparent;
+    color: var(--accent);
+    border-color: rgba(200,169,110,0.3);
+  }
+
+  .who-role {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .who-questions { list-style: none; }
+  .who-q {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .who-q:last-child { border-bottom: none; }
+
+  .who-answer {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #1e1e28;
+    background: #1e1e28;
+    padding: 2px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .who-answer.revealed {
+    color: #7ecf7e;
+    background: rgba(126,207,126,0.08);
+  }
+  .who-answer.revealed.no {
+    color: #cf7e7e;
+    background: rgba(207,126,126,0.08);
+  }
+
+  .reveal-all-btn {
+    margin-top: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .reveal-all-btn:hover { color: var(--accent); border-color: rgba(200,169,110,0.4); }
+
+  /* ══════════════════════════════
+     SECTION 2 — QUIZ
+  ══════════════════════════════ */
+  #quiz { border-top: 1px solid var(--border); }
+
+  .quiz-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2.5rem;
+  }
+
+  .quiz-progress-bar {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .quiz-progress-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    transition: width 0.5s ease;
+  }
+
+  .quiz-q-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .quiz-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+
+  .quiz-opt {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.9rem 1.2rem;
+    color: var(--text);
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .quiz-opt:hover { border-color: rgba(200,169,110,0.5); color: var(--accent); background: rgba(200,169,110,0.04); }
+  .quiz-opt.selected { border-color: var(--accent); background: rgba(200,169,110,0.08); color: var(--accent); }
+
+  .quiz-opt-letter {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  .quiz-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+  }
+  .quiz-btn.primary { background: var(--accent); color: #0a0a0c; border-color: var(--accent); font-weight: 700; }
+  .quiz-btn.primary:hover { background: #dfc07e; }
+  .quiz-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .quiz-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .quiz-result {
+    display: none;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .quiz-result-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .quiz-result-role {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .quiz-result-desc {
+    font-size: 1rem;
+    color: var(--text);
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+  }
+
+  /* ══════════════════════════════
+     SECTION 3 — SECRETS
+  ══════════════════════════════ */
+  #secrets { border-top: 1px solid var(--border); }
+
+  .secrets-warning {
+    background: rgba(139,58,58,0.1);
+    border: 1px solid rgba(139,58,58,0.3);
+    border-radius: 3px;
+    padding: 0.8rem 1.2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #c07070;
+    margin-bottom: 2.5rem;
+  }
+
+  .secret-item {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .secret-item:hover { border-color: rgba(200,169,110,0.2); }
+
+  .secret-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    background: var(--card);
+    user-select: none;
+  }
+
+  .secret-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+  }
+
+  .spoiler-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c07070;
+    background: rgba(139,58,58,0.15);
+    padding: 3px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .secret-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, padding 0.3s;
+    padding: 0 1.5rem;
+    background: var(--surface);
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.8;
+  }
+  .secret-body.open {
+    max-height: 400px;
+    padding: 1.2rem 1.5rem;
+  }
+
+  .secret-reveal-btn {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #0a0a0c;
+    background: var(--accent2);
+    border: none;
+    border-radius: 2px;
+    padding: 6px 14px;
+    cursor: pointer;
+    margin-bottom: 0.8rem;
+    transition: background 0.3s;
+  }
+  .secret-reveal-btn:hover { background: #a04040; }
+
+  .secret-text-hidden { filter: blur(8px); user-select: none; transition: filter 0.5s; font-size: 0.9rem; }
+  .secret-text-hidden.shown { filter: none; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .footer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .footer-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 4rem 1.2rem; }
+    .who-grid { grid-template-columns: 1fr; }
+    .quiz-box { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">The Teacher</div>
+  <ul class="nav-links">
+    <li><a href="#whoami">Who Am I</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#secrets">Secrets</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Freida McFadden · 2023</div>
+  <h1 class="hero-title">
+    The<br>
+    <em>Teacher</em>
+  </h1>
+  <p class="hero-sub">Not everyone is who they seem to be.</p>
+  <div class="blood-line"></div>
+</div>
+
+<!-- SECTION 1: WHO AM I -->
+<section id="whoami">
+  <div class="section-label reveal">Game</div>
+  <h2 class="section-title reveal">Who Am I?</h2>
+  <p class="who-intro reveal">Read the questions aloud. Answer YES or NO. Can you guess which character is on your back? Click the black boxes to reveal answers — only YOU can see them.</p>
+
+  <div class="who-grid">
+
+    <!-- ADDIE -->
+    <div class="who-card reveal">
+      <div class="who-card-header">
+        <div class="who-avatar" style="background:rgba(139,58,58,0.15); color:#c8a96e;">A</div>
+        <div>
+          <div style="margin-bottom:4px;">
+            <span class="who-name-hidden" onclick="this.classList.toggle('revealed')">Addie Severson</span>
+          </div>
+          <div class="who-role">Card #1</div>
+        </div>
+      </div>
+      <ul class="who-questions">
+        <li class="who-q">Am I a student? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do people think I cause trouble? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Is my reputation fair? <span class="who-answer" data-ans="no" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Does an adult take advantage of my trust? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I figure out I am being manipulated? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I end up happy with someone my own age? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I the victim who becomes a survivor? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+      </ul>
+      <button class="reveal-all-btn" onclick="revealAll(this)">Reveal all answers</button>
+    </div>
+
+    <!-- EVE -->
+    <div class="who-card reveal">
+      <div class="who-card-header">
+        <div class="who-avatar" style="background:rgba(58,58,139,0.15); color:#9e9ec8;">E</div>
+        <div>
+          <div style="margin-bottom:4px;">
+            <span class="who-name-hidden" onclick="this.classList.toggle('revealed')">Eve Bennett</span>
+          </div>
+          <div class="who-role">Card #2</div>
+        </div>
+      </div>
+      <ul class="who-questions">
+        <li class="who-q">Am I a teacher? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Does my life look perfect from the outside? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I happily married? <span class="who-answer" data-ans="no" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I have a secret of my own? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I as innocent as I seem? <span class="who-answer" data-ans="no" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I narrate part of this story? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Does my ending surprise the reader? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+      </ul>
+      <button class="reveal-all-btn" onclick="revealAll(this)">Reveal all answers</button>
+    </div>
+
+    <!-- NATE -->
+    <div class="who-card reveal">
+      <div class="who-card-header">
+        <div class="who-avatar" style="background:rgba(139,80,58,0.15); color:#c8956e;">N</div>
+        <div>
+          <div style="margin-bottom:4px;">
+            <span class="who-name-hidden" onclick="this.classList.toggle('revealed')">Nate Bennett</span>
+          </div>
+          <div class="who-role">Card #3</div>
+        </div>
+      </div>
+      <ul class="who-questions">
+        <li class="who-q">Am I a teacher? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do students admire me? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I as good as I appear? <span class="who-answer" data-ans="no" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I dangerous? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I manipulate the people around me? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I married? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I get away with everything in the end? <span class="who-answer" data-ans="no" onclick="revealAnswer(this)">tap</span></li>
+      </ul>
+      <button class="reveal-all-btn" onclick="revealAll(this)">Reveal all answers</button>
+    </div>
+
+    <!-- HUDSON/JAY -->
+    <div class="who-card reveal">
+      <div class="who-card-header">
+        <div class="who-avatar" style="background:rgba(58,110,58,0.15); color:#7ec87e;">J</div>
+        <div>
+          <div style="margin-bottom:4px;">
+            <span class="who-name-hidden" onclick="this.classList.toggle('revealed')">Hudson / Jay</span>
+          </div>
+          <div class="who-role">Card #4</div>
+        </div>
+      </div>
+      <ul class="who-questions">
+        <li class="who-q">Am I a student? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I connected to more than one main character? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I have a connection to a teacher? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Is that connection appropriate? <span class="who-answer" data-ans="no" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Do I help solve the mystery? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Am I who I appear to be at first? <span class="who-answer" data-ans="no" onclick="revealAnswer(this)">tap</span></li>
+        <li class="who-q">Is my role in the story a surprise? <span class="who-answer" data-ans="yes" onclick="revealAnswer(this)">tap</span></li>
+      </ul>
+      <button class="reveal-all-btn" onclick="revealAll(this)">Reveal all answers</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 2: QUIZ -->
+<section id="quiz">
+  <div class="section-label reveal">Quiz</div>
+  <h2 class="section-title reveal">Which character are you?</h2>
+
+  <div class="quiz-box reveal" id="quizBox">
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="quizProgress" style="width:0%"></div>
+    </div>
+    <div id="quizContent">
+      <div class="quiz-q-num" id="quizNum">Question 1 of 6</div>
+      <div class="quiz-question" id="quizQ"></div>
+      <div class="quiz-options" id="quizOpts"></div>
+      <div class="quiz-nav">
+        <span></span>
+        <button class="quiz-btn primary" id="quizNext" onclick="nextQuestion()" disabled>Next →</button>
+      </div>
+    </div>
+    <div class="quiz-result" id="quizResult">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--muted);margin-bottom:1.5rem;">You are...</div>
+      <div class="quiz-result-name" id="resultName"></div>
+      <div class="quiz-result-role" id="resultRole"></div>
+      <div class="quiz-result-desc" id="resultDesc"></div>
+      <button class="quiz-btn" onclick="resetQuiz()">Try again</button>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: SECRETS -->
+<section id="secrets">
+  <div class="section-label reveal">Spoilers</div>
+  <h2 class="section-title reveal">Secrets & Twists</h2>
+  <div class="secrets-warning reveal">⚠ Warning — this section contains major spoilers. Do not read if you haven't finished the book.</div>
+
+  <div id="secretsList">
+
+    <div class="secret-item reveal">
+      <div class="secret-header" onclick="toggleSecret(this)">
+        <span class="secret-title">Why Addie becomes Nate's target</span>
+        <span class="spoiler-tag">spoiler</span>
+      </div>
+      <div class="secret-body">
+        <button class="secret-reveal-btn" onclick="revealText(this)">Reveal spoiler</button>
+        <p class="secret-text-hidden">Addie already has a damaged reputation at school from a past scandal — which makes her the perfect target. No one will easily believe her. Nate is calculated: he chooses girls who are already vulnerable, already doubted by others. His "interest" in Addie is not spontaneous — it is predatory and deliberate from the very beginning.</p>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-header" onclick="toggleSecret(this)">
+        <span class="secret-title">Eve is not the saint she appears to be</span>
+        <span class="spoiler-tag">spoiler</span>
+      </div>
+      <div class="secret-body">
+        <button class="secret-reveal-btn" onclick="revealText(this)">Reveal spoiler</button>
+        <p class="secret-text-hidden">Eve presents herself as the wronged, loyal wife — but she has a secret of her own. She has been involved with a student herself, someone who becomes her hidden lover. This completely reframes her narration: she is not an objective, innocent voice. She is as morally complicated as the husband she is trying to expose. Two unreliable narrators. Two double lives.</p>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-header" onclick="toggleSecret(this)">
+        <span class="secret-title">Nate's real plan — murder and a frame-up</span>
+        <span class="spoiler-tag">major spoiler</span>
+      </div>
+      <div class="secret-body">
+        <button class="secret-reveal-btn" onclick="revealText(this)">Reveal spoiler</button>
+        <p class="secret-text-hidden">Nate is not just manipulative — he is murderous. His plan goes far beyond the affair: he intends to kill Eve and frame Addie for it. He wants to eliminate his wife, destroy his teenage victim, and walk away clean. It is a calculated, cold-blooded scheme that reveals just how monstrous he truly is beneath the charming surface.</p>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-header" onclick="toggleSecret(this)">
+        <span class="secret-title">Hudson / Jay — not who he seems</span>
+        <span class="spoiler-tag">spoiler</span>
+      </div>
+      <div class="secret-body">
+        <button class="secret-reveal-btn" onclick="revealText(this)">Reveal spoiler</button>
+        <p class="secret-text-hidden">Hudson, also known as Jay, appears to be a straightforward student — but his connections run deeper than anyone suspects. He is tied to both Addie and to Eve's secret life, placing him at the crossroads of every major plot thread. His true role only becomes clear in the final chapters, when the full picture of who knew what — and when — finally snaps into place.</p>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-header" onclick="toggleSecret(this)">
+        <span class="secret-title">The ending — Addie's redemption</span>
+        <span class="spoiler-tag">spoiler</span>
+      </div>
+      <div class="secret-body">
+        <button class="secret-reveal-btn" onclick="revealText(this)">Reveal spoiler</button>
+        <p class="secret-text-hidden">Despite everything Nate put her through — the manipulation, the attempt to frame her, the destruction of her reputation — Addie survives and finds something real. She ends up with someone her own age, someone who sees her clearly and cares for her honestly. McFadden gives her the ending she deserves: not just survival, but genuine happiness.</p>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-header" onclick="toggleSecret(this)">
+        <span class="secret-title">What does the title really mean?</span>
+        <span class="spoiler-tag">theme</span>
+      </div>
+      <div class="secret-body">
+        <button class="secret-reveal-btn" onclick="revealText(this)">Reveal spoiler</button>
+        <p class="secret-text-hidden">On the surface, "The Teacher" refers to Nate — the literature teacher everyone admires. But the title has darker layers. Nate teaches Addie a brutal lesson about trust and power. Eve teaches herself what she is capable of when pushed to the edge. And the book teaches the reader: charm is not character, and the most dangerous people are often the most beloved.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-title">The Teacher</div>
+  <div class="footer-sub">Freida McFadden · Individual Reading Project</div>
+</footer>
+
+<script>
+// ── WHO AM I helpers ─────────────────────────
+function revealAnswer(el) {
+  el.classList.add('revealed');
+  const ans = el.dataset.ans;
+  el.textContent = ans === 'yes' ? 'YES' : 'NO';
+  if (ans === 'no') el.classList.add('no');
+}
+
+function revealAll(btn) {
+  const card = btn.closest('.who-card');
+  card.querySelectorAll('.who-answer').forEach(a => revealAnswer(a));
+}
+
+// ── SECRETS helpers ───────────────────────────
+function toggleSecret(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function revealText(btn) {
+  const p = btn.nextElementSibling;
+  p.classList.add('shown');
+  btn.style.display = 'none';
+}
+
+// ── QUIZ ──────────────────────────────────────
+const questions = [
+  {
+    q: "Someone you care about is keeping a secret from you. What do you do?",
+    opts: [
+      { text: "Try to find out the truth quietly", scores: {eve:2, naomi:1} },
+      { text: "Confront them directly", scores: {nate:2, hudson:1} },
+      { text: "Wait and observe — patience is power", scores: {eve:2, nate:1} },
+      { text: "Trust them. Maybe they have a reason.", scores: {naomi:2, hudson:2} }
+    ]
+  },
+  {
+    q: "How do you feel in a room full of people you don't know?",
+    opts: [
+      { text: "Excited — I can be whoever I want", scores: {nate:3} },
+      { text: "Anxious — I never quite fit in", scores: {naomi:3} },
+      { text: "Cautious — I watch before I speak", scores: {eve:3} },
+      { text: "Fine — I just find someone kind to talk to", scores: {hudson:3} }
+    ]
+  },
+  {
+    q: "Someone is manipulating a person you care about. You know, but have no proof. You...",
+    opts: [
+      { text: "Do nothing — getting involved is dangerous", scores: {eve:2} },
+      { text: "Warn the person, even if they won't believe me", scores: {hudson:3} },
+      { text: "Find a way to expose the manipulator", scores: {naomi:2, eve:1} },
+      { text: "Use the situation to my advantage", scores: {nate:3} }
+    ]
+  },
+  {
+    q: "What matters most to you?",
+    opts: [
+      { text: "Being loved and special to someone", scores: {naomi:3} },
+      { text: "Control and admiration", scores: {nate:3} },
+      { text: "Stability — even if it means illusions", scores: {eve:3} },
+      { text: "Honesty, even when it hurts", scores: {hudson:3} }
+    ]
+  },
+  {
+    q: "When you look in the mirror, what do you see?",
+    opts: [
+      { text: "Someone still figuring everything out", scores: {naomi:3, hudson:1} },
+      { text: "Someone smarter than people realize", scores: {eve:2, nate:1} },
+      { text: "Someone who has made difficult choices", scores: {eve:3} },
+      { text: "Someone who could charm anyone", scores: {nate:3} }
+    ]
+  },
+  {
+    q: "The story is over. What stays with you?",
+    opts: [
+      { text: "The pain of being deceived by someone you trusted", scores: {naomi:3} },
+      { text: "The weight of what I chose to ignore", scores: {eve:3} },
+      { text: "Nothing — I'd do it all again", scores: {nate:3} },
+      { text: "The relief that truth finally came out", scores: {hudson:3} }
+    ]
+  }
+];
+
+const results = {
+  naomi: {
+    name: "Addie Severson",
+    role: "The girl who was targeted",
+    desc: "You feel deeply and search for real connection. The world has been unfair to you — your reputation does not define who you truly are. Despite being manipulated by someone who should have protected you, you find your way back to yourself. The ending belongs to you."
+  },
+  eve: {
+    name: "Eve Bennett",
+    role: "The wife with secrets of her own",
+    desc: "You project a perfect life while hiding a complicated truth. You are perceptive and strategic, but far from innocent. You carry secrets that would shock the people around you. The most layered character in the story — and the hardest to judge."
+  },
+  nate: {
+    name: "Nate Bennett",
+    role: "The charming monster",
+    desc: "You are magnetic, calculated, and dangerous. You know exactly how to make people trust you — and you exploit that completely. Behind the charm is someone capable of true cruelty. The book is a warning about people like you. Hopefully this is just a quiz result."
+  },
+  hudson: {
+    name: "Hudson / Jay",
+    role: "The one at the center of it all",
+    desc: "You are connected to more people than anyone realizes. Your role in the story is surprising — you are not simply who you appear to be at first. In the end, you become a key piece of the puzzle that changes everything."
+  }
+};
+
+let current = 0;
+let scores = { naomi: 0, eve: 0, nate: 0, hudson: 0 };
+let answered = false;
+
+function renderQuestion() {
+  const q = questions[current];
+  document.getElementById('quizNum').textContent = `Question ${current + 1} of ${questions.length}`;
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizProgress').style.width = `${(current / questions.length) * 100}%`;
+  document.getElementById('quizNext').disabled = true;
+  answered = false;
+
+  const opts = document.getElementById('quizOpts');
+  opts.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.innerHTML = `<span class="quiz-opt-letter">${letters[i]}</span>${opt.text}`;
+    btn.onclick = () => selectOption(btn, opt.scores);
+    opts.appendChild(btn);
+  });
+}
+
+function selectOption(btn, s) {
+  if (answered) return;
+  document.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  Object.entries(s).forEach(([k, v]) => scores[k] = (scores[k] || 0) + v);
+  answered = true;
+  document.getElementById('quizNext').disabled = false;
+
+  const isLast = current === questions.length - 1;
+  document.getElementById('quizNext').textContent = isLast ? 'See result →' : 'Next →';
+}
+
+function nextQuestion() {
+  if (!answered) return;
+  current++;
+  if (current >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizProgress').style.width = '100%';
+  const winner = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+  const r = results[winner];
+  document.getElementById('resultName').textContent = r.name;
+  document.getElementById('resultRole').textContent = r.role;
+  document.getElementById('resultDesc').textContent = r.desc;
+  document.getElementById('quizContent').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'block';
+}
+
+function resetQuiz() {
+  current = 0;
+  scores = { naomi: 0, eve: 0, nate: 0, hudson: 0 };
+  answered = false;
+  document.getElementById('quizContent').style.display = 'block';
+  document.getElementById('quizResult').style.display = 'none';
+  renderQuestion();
+}
+
+renderQuestion();
+
+// ── SCROLL REVEAL ─────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
